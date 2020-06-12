@@ -15,7 +15,11 @@ class TextilParser(Parser):
         urls_collections = []
         for collecion_block in colllections_blocks:
             urls_collections.append(collecion_block.select_one('a')['href'])
-        resps_collections = self.requests.get(urls_collections)
+        splited_urls_collections = self.split_list(urls_collections, 10)
+        resps_collections = []
+        for url_list in splited_urls_collections:
+            resps_collections.append(self.requests.get(url_list))
+        print(len(resps_collections))
         for resp_collection in resps_collections:
             soup = BeautifulSoup(resp_collection, 'lxml')
             materials_blocks = soup.select('.woocommerce-LoopProduct-link')
