@@ -18,7 +18,7 @@ class TextilParser(Parser):
         splited_urls_collections = self.split_list(urls_collections, 5)
         resps_collections = []
         for url_list in splited_urls_collections:
-            resps_collections.append(self.requests.get(url_list))
+            resps_collections.extend(self.requests.get(url_list))
         print(len(resps_collections))
         # for resp_collection in resps_collections:
         #     soup = BeautifulSoup(resp_collection, 'lxml')
