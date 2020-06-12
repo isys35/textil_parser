@@ -2,6 +2,8 @@ from parsing_base import Parser
 from bs4 import BeautifulSoup
 import os
 import sys
+import xlwt
+
 
 class TextilParser(Parser):
     MAIN_PAGE = 'https://teks-o-park.com'
@@ -36,6 +38,33 @@ class TextilParser(Parser):
             print(img_url)
             image_name = img_url.split('/')[-1]
             self.save_image(img_url, f"{self.image_catalog}/{image_name}")
+            description = self.get_description(soup)
+            materials_data.append([image_name, description])
+        self.save_xls(materials_data)
+
+    def save_xls(self, materials_data):
+        wb = xlwt.Workbook()
+        ws = wb.add_sheet('sheet')
+        for i in range(len(materials_data)):
+            ws.write(i, 0, materials_data[i][0])
+            ws.write(i, 1, materials_data[i][1])
+        wb.save('data.xls')
+
+    def get_description(self, soup):
+        discription = soup.find('div', attrs={'itemprop': 'description'})
+        table = discription.select('table')[-1]
+        trs = table.select('tr')
+        description_text = str()
+        for tr in trs:
+            tds = tr.select('td')
+            if tds[0].text == 'Рекомендации по чистке и уходу:':
+                break
+            elif tds[0].text == 'Устойчивость к окрашиванию при трении (основной цвет):':
+                description_text += 'static;' + trs[trs.index(tr) + 1].text + '\t' + trs[trs.index(tr) + 2].text + '|'
+                break
+            else:
+                description_text += 'static;' + tds[0].text + '\t' + tds[1].text + '|\n'
+        return description_text
 
     def init_image_catalog(self):
         try:
@@ -47,8 +76,6 @@ class TextilParser(Parser):
             os.unlink(file_path)
 
 
-
 if __name__ == '__main__':
     parser = TextilParser()
-    parser.save_image("https://mlemm7y2f58g.i.optimole.com/W0Dvvks.HGri~ee51/w:auto/h:auto/q:auto/https://teks-o-park.com/wp-content/uploads/2019/11/Admiral-brown.jpg", 'Admiral-brown.jpg')
     parser.update_data()
