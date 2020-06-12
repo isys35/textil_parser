@@ -1,6 +1,7 @@
 from parsing_base import Parser
 from bs4 import BeautifulSoup
 import os
+import sys
 
 class TextilParser(Parser):
     MAIN_PAGE = 'https://teks-o-park.com'
@@ -35,6 +36,7 @@ class TextilParser(Parser):
             print(img_url)
             image_name = img_url.split('/')[-1]
             self.save_image(img_url, f"{self.image_catalog}/{image_name}")
+            sys.exit()
 
     def init_image_catalog(self):
         try:
