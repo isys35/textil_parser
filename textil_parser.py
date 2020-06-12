@@ -15,7 +15,7 @@ class TextilParser(Parser):
         urls_collections = []
         for collecion_block in colllections_blocks:
             urls_collections.append(collecion_block.select_one('a')['href'])
-        splited_urls_collections = self.split_list(urls_collections, 10)
+        splited_urls_collections = self.split_list(urls_collections, 5)
         resps_collections = []
         for url_list in splited_urls_collections:
             resps_collections.append(self.requests.get(url_list))
