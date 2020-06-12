@@ -32,6 +32,7 @@ class TextilParser(Parser):
             resp = self.request.get(url)
             soup = BeautifulSoup(resp.text, 'lxml')
             img_url = soup.find('meta', attrs={'property': 'og:image'})['content']
+            print(img_url)
             image_name = img_url.split('/')[-1]
             self.save_image(img_url, f"{self.image_catalog}/{image_name}")
 
