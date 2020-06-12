@@ -25,7 +25,7 @@ class TextilParser(Parser):
             materials_urls = []
             for material_block in materials_blocks:
                 materials_urls.append(material_block['href'])
-            print(materials_urls)
+            print(len(materials_urls))
 
 
 
