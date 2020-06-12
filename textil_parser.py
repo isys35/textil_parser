@@ -52,6 +52,8 @@ class TextilParser(Parser):
 
     def get_description(self, soup):
         discription = soup.find('div', attrs={'itemprop': 'description'})
+        if not discription:
+            return str()
         table = discription.select('table')[-1]
         trs = table.select('tr')
         description_text = str()
@@ -63,7 +65,8 @@ class TextilParser(Parser):
                 description_text += 'static;' + trs[trs.index(tr) + 1].text + '\t' + trs[trs.index(tr) + 2].text + '|'
                 break
             else:
-                description_text += 'static;' + tds[0].text + '\t' + tds[1].text + '|\n'
+                description_text += 'static;' + tds[0].text + ';\t' + tds[1].text + '|\n'
+        print(description_text)
         return description_text
 
     def init_image_catalog(self):
