@@ -36,7 +36,6 @@ class TextilParser(Parser):
             print(img_url)
             image_name = img_url.split('/')[-1]
             self.save_image(img_url, f"{self.image_catalog}/{image_name}")
-            sys.exit()
 
     def init_image_catalog(self):
         try:
@@ -49,8 +48,7 @@ class TextilParser(Parser):
 
 
 
-
-
 if __name__ == '__main__':
     parser = TextilParser()
+    parser.save_image("https://mlemm7y2f58g.i.optimole.com/W0Dvvks.HGri~ee51/w:auto/h:auto/q:auto/https://teks-o-park.com/wp-content/uploads/2019/11/Admiral-brown.jpg", 'Admiral-brown.jpg')
     parser.update_data()
