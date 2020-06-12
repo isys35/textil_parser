@@ -62,7 +62,10 @@ class TextilParser(Parser):
             if tds[0].text == 'Рекомендации по чистке и уходу:':
                 break
             elif tds[0].text == 'Устойчивость к окрашиванию при трении (основной цвет):':
-                description_text += 'static;' + trs[trs.index(tr) + 1].text + '\t' + trs[trs.index(tr) + 2].text + '|'
+                if tds[1].text:
+                    description_text += 'static;'+'Устойчивость к окрашиванию при трении (основной цвет):' +';\t' + tds[1].text+  '|'
+                else:
+                    description_text += 'static;' +'Устойчивость к окрашиванию при трении (основной цвет):'+';\t'+ trs[trs.index(tr) + 1].text.replace('\n', ' ') + ';\t' + trs[trs.index(tr) + 2].text.replace('\n', ' ') + '|'
                 break
             else:
                 description_text += 'static;' + tds[0].text + ';\t' + tds[1].text + '|\n'
@@ -81,4 +84,6 @@ class TextilParser(Parser):
 
 if __name__ == '__main__':
     parser = TextilParser()
+    # resp = parser.request.get('https://teks-o-park.com/product/admiral-caramel/')
+    # parser.get_description(BeautifulSoup(resp.text, 'lxml'))
     parser.update_data()
